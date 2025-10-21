@@ -1,0 +1,41 @@
+name: Release
+on:
+  workflow_dispatch: {}
+  push: { tags: ['v*.*.*'] }
+
+permissions:
+  contents: write
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'   # 👈 no cache: 'pnpm'
+
+      - name: Install pnpm
+        run: npm i -g pnpm@9.12.1
+
+      - name: Check pnpm
+        run: pnpm -v
+
+      - name: Install JS deps
+        run: pnpm install --frozen-lockfile
+
+      - name: Build UI
+        run: pnpm -C apps/ui build
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Build Tauri app
+        run: pnpm tauri build --config apps/desktop/src-tauri/tauri.conf.json
+
+      - name: Upload Linux bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: gitfrisky-linux
+          path: apps/desktop/src-tauri/target/release/bundle/**

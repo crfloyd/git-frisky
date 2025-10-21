@@ -1,0 +1,48 @@
+name: CodeQL
+on:
+  push: { branches: ["main"] }
+  pull_request: { branches: ["main"] }
+  schedule: [{ cron: "0 6 * * 1" }]
+
+permissions:
+  actions: read
+  contents: read
+  security-events: write
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        language: ["javascript-typescript", "rust"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'   # 👈 no cache: 'pnpm'
+
+      - name: Install pnpm
+        run: npm i -g pnpm@9.12.1
+
+      - name: Check pnpm
+        run: pnpm -v
+
+      - name: Install JS deps
+        run: pnpm install --frozen-lockfile
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ matrix.language }}
+
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v3
+
+      - name: Analyze
+        uses: github/codeql-action/analyze@v3

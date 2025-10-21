@@ -1,0 +1,46 @@
+name: ci
+on:
+  push: { branches: [main] }
+  pull_request: { branches: [main] }
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'   # 👈 no cache: 'pnpm' here
+
+      - name: Install pnpm
+        run: npm i -g pnpm@9.12.1
+
+      - name: Check pnpm
+        run: pnpm -v
+
+      - name: Install JS deps
+        run: pnpm install --frozen-lockfile
+
+      - name: Typecheck (workspaces, if present)
+        run: pnpm -r --if-present run typecheck
+
+      - name: Lint (workspaces, if present)
+        run: pnpm -r --if-present run lint
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Install Linux GUI build deps (Tauri)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libgtk-3-dev \
+            libglib2.0-dev \
+            libwebkit2gtk-4.1-dev \
+            libayatana-appindicator3-dev \
+            librsvg2-dev \
+            pkg-config
+
+      - name: Build Rust (no bundle)
+        run: cargo build --workspace --locked
