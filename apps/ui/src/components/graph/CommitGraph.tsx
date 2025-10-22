@@ -223,6 +223,7 @@ export function CommitGraph({
                 isHead={commit.oid === actualHeadOid}
                 isFirstRow={virtualRow.index === 0}
                 hasNoParents={layout?.hasNoParents ?? false}
+                lanesFromAbove={layout?.lanesFromAbove ?? []}
                 onClick={() => onCommitSelect?.(commit.oid)}
               />
             </div>

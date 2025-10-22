@@ -552,9 +552,10 @@ pub fn log(repo_path: String, limit: Option<usize>) -> Result<Vec<Commit>, Strin
     let repo = Repository::open(&repo_path).map_err(toe)?;
     let limit = limit.unwrap_or(500); // Default to 500 commits
 
-    // Create revwalk with topological + time sort
+    // Create revwalk with time sort (equivalent to git log --date-order)
+    // This shows commits in chronological order across all branches
     let mut revwalk = repo.revwalk().map_err(toe)?;
-    revwalk.set_sorting(Sort::TOPOLOGICAL | Sort::TIME).map_err(toe)?;
+    revwalk.set_sorting(Sort::TIME).map_err(toe)?;
 
     // Push ALL branches (local + remote) to show complete graph like GitKraken
     // This ensures we see commits from all branches, not just the current one

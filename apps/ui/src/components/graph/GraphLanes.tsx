@@ -10,6 +10,7 @@ type GraphLanesProps = {
   containerWidth?: number // Optional: actual container width for viewBox
   isFirstRow: boolean // Is this the first visible row?
   hasNoParents: boolean // Does this commit have no parents? (final commit in branch)
+  lanesFromAbove: number[] // Lanes that existed in previous row (draw from top)
 }
 
 const LANE_WIDTH = 16
@@ -41,7 +42,18 @@ export function GraphLanes({
   containerWidth,
   isFirstRow,
   hasNoParents,
+  lanesFromAbove,
 }: GraphLanesProps) {
+  // Debug logging (commented out)
+  // if (commitOid.startsWith('fb0b258e')) {
+  //   console.log(`🎨 GraphLanes for fb0b258e:`)
+  //   console.log(`  currentLane: ${currentLane}`)
+  //   console.log(`  parentLanes: [${parentLanes.join(', ')}]`)
+  //   console.log(`  activeLanes: [${activeLanes.join(', ')}]`)
+  //   console.log(`  lanesFromAbove: [${lanesFromAbove.join(', ')}]`)
+  //   console.log(`  branchOffLanes: ${JSON.stringify(Object.fromEntries(branchOffLanes))}`)
+  // }
+
   // Calculate viewBox width - use containerWidth if provided (for compressed layouts)
   // Otherwise calculate natural width
   const naturalWidth = (maxLane + 1) * LANE_WIDTH
@@ -88,9 +100,9 @@ export function GraphLanes({
         )
       } else {
         // Normal through-line (straight)
-        // If first row, only draw from center to bottom (no line above)
-        // If no parents, only draw from top to center (no line below)
-        const startY = isFirstRow ? centerY : 0
+        // Only draw from top if this lane existed in the previous row
+        const existedBefore = lanesFromAbove.includes(lane)
+        const startY = (isFirstRow || !existedBefore) ? centerY : 0
         const endY = hasNoParents ? centerY : ROW_HEIGHT
         elements.push(
           <line
@@ -108,7 +120,30 @@ export function GraphLanes({
       }
     })
 
-    // 2. Draw parent connection curves (these overlay the through-lines)
+    // 2. Draw incoming line for current commit's lane if it came from above
+    // but isn't continuing (merging/ending at this commit)
+    const currentLaneFromAbove = lanesFromAbove.includes(currentLane)
+    const currentLaneInActive = activeLanes.includes(currentLane)
+    if (currentLaneFromAbove && !currentLaneInActive && !isFirstRow) {
+      // Lane came from above but is ending - draw line from top to center
+      const x = currentLane * effectiveLaneWidth + effectiveLaneWidth / 2
+      const color = getLaneColor(currentLane)
+      elements.push(
+        <line
+          key={`incoming-${currentLane}`}
+          x1={x}
+          y1={0}
+          x2={x}
+          y2={centerY}
+          stroke={color}
+          strokeWidth={LINE_WIDTH}
+          strokeLinecap="round"
+          opacity={0.8}
+        />
+      )
+    }
+
+    // 3. Draw parent connection curves (these overlay the through-lines)
     parentLanes.forEach((parentLane, index) => {
       const startX = currentLane * effectiveLaneWidth + effectiveLaneWidth / 2
       const endX = parentLane * effectiveLaneWidth + effectiveLaneWidth / 2

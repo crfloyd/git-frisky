@@ -38,6 +38,7 @@ type CommitRowProps = {
   isHead: boolean // Is this the HEAD commit?
   isFirstRow: boolean // Is this the first visible row?
   hasNoParents: boolean // Does this commit have no parents? (final commit in branch)
+  lanesFromAbove: number[] // Lanes that existed in previous row
   onClick: () => void
 }
 
@@ -83,6 +84,7 @@ export function CommitRow({
   isHead,
   isFirstRow,
   hasNoParents,
+  lanesFromAbove,
   onClick,
 }: CommitRowProps) {
   // Parse commit message for conventional commits badge
@@ -118,6 +120,7 @@ export function CommitRow({
           activeLanes={activeLanes}
           branchOffLanes={branchOffLanes}
           maxLane={maxLane}
+          lanesFromAbove={lanesFromAbove}
           commitOid={commit.oid}
           containerWidth={graphWidth}
           isFirstRow={isFirstRow}
