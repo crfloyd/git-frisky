@@ -53,9 +53,9 @@ export function AppShell({
 
         {/* Main Content: narrower to give more space to diff viewer */}
         <Panel
-          defaultSize={inspectorVisible ? 35 : 100}
-          minSize={25}
-          maxSize={inspectorVisible ? 50 : 40}
+          defaultSize={inspectorVisible ? 28 : 100}
+          minSize={22}
+          maxSize={inspectorVisible ? 45 : 40}
           className="bg-background"
         >
           {children}
@@ -66,9 +66,9 @@ export function AppShell({
           <>
             <PanelResizeHandle className="w-px bg-border hover:bg-border-strong transition-colors" />
             <Panel
-              defaultSize={65}
-              minSize={50}
-              maxSize={75}
+              defaultSize={72}
+              minSize={55}
+              maxSize={78}
               className="bg-elevated"
             >
               <Inspector onClose={() => onInspectorToggle?.(false)} filePath={inspectorFilePath}>

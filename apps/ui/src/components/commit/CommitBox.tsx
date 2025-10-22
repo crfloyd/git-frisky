@@ -81,17 +81,17 @@ export function CommitBox({ onCommit, stagedCount, disabled }: CommitBoxProps) {
     subject.trim().length > 0 && stagedCount > 0 && !isCommitting && !disabled
 
   return (
-    <div className="border-t border-border p-4 bg-elevated">
+    <div className="border-t border-border px-3 py-2.5 bg-elevated">
       {/* Subject input */}
-      <div className="mb-3">
-        <div className="flex items-center gap-2 mb-2">
-          <label className="text-sm font-medium text-foreground-muted">
+      <div className="mb-2">
+        <div className="flex items-center gap-1.5 mb-1">
+          <label className="text-[11px] font-medium text-foreground-muted">
             Commit message
           </label>
           {commitType && (
             <span
               className={cn(
-                'text-xs px-2 py-0.5 rounded text-white',
+                'text-[9px] px-1.5 py-0.5 rounded text-white',
                 commitType.color
               )}
             >
@@ -99,7 +99,7 @@ export function CommitBox({ onCommit, stagedCount, disabled }: CommitBoxProps) {
               {parsed.isBreaking && '!'}
             </span>
           )}
-          <span className={cn('text-xs ml-auto', subjectColor)}>
+          <span className={cn('text-[10px] ml-auto', subjectColor)}>
             {subjectLength}/72
           </span>
         </div>
@@ -115,45 +115,41 @@ export function CommitBox({ onCommit, stagedCount, disabled }: CommitBoxProps) {
           }}
           placeholder="type: subject (max 72 chars)"
           className={cn(
-            'w-full h-9 px-3 bg-base border rounded text-base font-mono',
+            'w-full h-6 px-2 bg-base border rounded text-[11px] font-mono',
             'border-border focus:border-focus focus:outline-none',
             'text-foreground placeholder:text-foreground-dim'
           )}
           disabled={disabled}
         />
-
-        <p className="text-xs text-foreground-dim mt-1">
-          Tip: Use Conventional Commits format: type(scope): subject
-        </p>
       </div>
 
       {/* Description textarea */}
-      <div className="mb-3">
-        <label className="text-sm font-medium text-foreground-muted block mb-2">
+      <div className="mb-2">
+        <label className="text-[11px] font-medium text-foreground-muted block mb-1">
           Description (optional)
         </label>
         <textarea
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           placeholder="Additional context or details..."
-          rows={4}
+          rows={3}
           className={cn(
-            'w-full px-3 py-2 bg-base border rounded text-sm font-mono resize-y',
+            'w-full px-2 py-1.5 bg-base border rounded text-[11px] font-mono resize-y',
             'border-border focus:border-focus focus:outline-none',
             'text-foreground placeholder:text-foreground-dim',
-            'min-h-[80px]'
+            'min-h-[60px]'
           )}
           disabled={disabled}
         />
       </div>
 
       {/* Commit button */}
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-1.5">
         <button
           onClick={handleCommit}
           disabled={!canCommit}
           className={cn(
-            'px-4 h-9 rounded text-sm font-medium transition-colors',
+            'px-2.5 h-6 rounded text-[10px] font-medium transition-colors',
             canCommit
               ? 'bg-accent text-white hover:opacity-90'
               : 'bg-subtle text-disabled cursor-not-allowed'
@@ -162,7 +158,7 @@ export function CommitBox({ onCommit, stagedCount, disabled }: CommitBoxProps) {
           {isCommitting ? 'Committing...' : `Commit (${stagedCount})`}
         </button>
 
-        <span className="text-xs text-foreground-dim">⌘↵</span>
+        <span className="text-[9px] text-foreground-dim">⌘↵</span>
       </div>
     </div>
   )

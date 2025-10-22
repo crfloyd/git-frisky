@@ -2,13 +2,13 @@ import { Diamond, Settings, Check } from 'lucide-react'
 
 export function StatusBar() {
   return (
-    <div className="h-7 bg-elevated border-t border-border flex items-center px-4 text-sm text-foreground-muted">
+    <div className="h-6 bg-elevated border-t border-border flex items-center px-3 text-[10px] text-foreground-muted">
       {/* Current branch */}
       <button
-        className="flex items-center gap-1.5 hover:text-foreground transition-colors font-medium"
+        className="flex items-center gap-1 hover:text-foreground transition-colors font-medium"
         title="Switch branch"
       >
-        <Diamond size={14} />
+        <Diamond size={11} />
         <span>main</span>
       </button>
 
@@ -29,23 +29,23 @@ export function StatusBar() {
       <Divider />
 
       {/* Activity indicator (transient) */}
-      <div className="flex items-center gap-1.5 text-success">
-        <Check size={14} />
+      <div className="flex items-center gap-1 text-success">
+        <Check size={11} />
         <span>Synced</span>
       </div>
 
       {/* Settings */}
       <button
-        className="ml-4 p-1 rounded hover:bg-hover hover:text-foreground transition-colors"
+        className="ml-3 p-0.5 rounded hover:bg-hover hover:text-foreground transition-colors"
         aria-label="Settings"
         title="Settings ⌘,"
       >
-        <Settings size={14} />
+        <Settings size={11} />
       </button>
     </div>
   )
 }
 
 function Divider() {
-  return <div className="h-3 w-px bg-border mx-3" />
+  return <div className="h-2.5 w-px bg-border mx-2" />
 }

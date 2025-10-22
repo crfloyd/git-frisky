@@ -15,6 +15,7 @@ fn main() {
       api::repo::stage,
       api::repo::unstage,
       api::repo::commit,
+      api::repo::log,
       api::repo::stage_hunk,
       api::repo::unstage_hunk,
       api::watch::start_watch,

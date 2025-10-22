@@ -26,30 +26,6 @@ pnpm dev
 ```
 Opens Tauri window with React dev server (hot reload enabled).
 
----
-
-## Documentation
-
-- **[CLAUDE.md](./CLAUDE.md)** — Complete technical architecture, IPC API, implementation guide
-- **[UI_DESIGN.md](./UI_DESIGN.md)** — Design system, component specs, color palette
-- **[REVIEW_SUMMARY.md](./REVIEW_SUMMARY.md)** — VP review, handoff checklist, quality gates
-
-**Start here if implementing:**
-1. Read CLAUDE.md Sections 0-7 (architecture, security, types, git2 patterns)
-2. Read UI_DESIGN.md (design system, all 12 components)
-3. Follow CLAUDE.md Section 24 (200+ task checklist, phase-by-phase)
-
-### 4. Scaffolded structure
-
-```
-apps/
-  ui/                → React frontend (Vite)
-  desktop/
-    src-tauri/       → Tauri backend (Rust)
-packages/
-  shared-types/      → Shared TS types
-  parsers/           → Diff & graph utilities
-```
 
 ---
 
@@ -109,10 +85,7 @@ git-frisky/
 ├── docs/
 │   ├── decisions/               # Architecture Decision Records (ADRs)
 │   └── screenshots/             # UI screenshots
-│
-├── CLAUDE.md                    # Technical architecture (1300+ lines)
-├── UI_DESIGN.md                 # Design system (1100+ lines)
-└── REVIEW_SUMMARY.md            # VP review, quality gates
+
 ```
 
 ---
@@ -130,8 +103,6 @@ git-frisky/
 - Keyboard-first UX (command palette, shortcuts)
 - Minimal UI (information-dense without clutter)
 
-See [CLAUDE.md](./CLAUDE.md) for complete architecture.
-
 ---
 
 ## Performance Targets
@@ -141,16 +112,10 @@ See [CLAUDE.md](./CLAUDE.md) for complete architecture.
 - Commit graph render: <100ms (1000 commits)
 - Diff display: <100ms (1000 lines)
 
-See CLAUDE.md Section 0 for all targets.
-
 ---
 
 ## Contributing
 
-**Before submitting PRs:**
-1. Read [CLAUDE.md](./CLAUDE.md) Sections 0-7 (architecture)
-2. Follow phase-by-phase checklist (CLAUDE.md Section 24)
-3. Meet quality gates (REVIEW_SUMMARY.md)
 
 **Before committing:**
 ```bash
@@ -163,10 +128,8 @@ pnpm test              # Run tests (>70% Rust, >60% frontend coverage)
 **Testing Strategy:**
 - Unit tests: Rust (cargo test), React (Vitest)
 - Integration: Playwright E2E
-- Performance: Benchmark critical paths (see CLAUDE.md Section 12)
 
 **Code Review Checklist:**
-- [ ] Follows design system (UI_DESIGN.md)
 - [ ] Meets performance targets
 - [ ] Tests included (unit + integration)
 - [ ] Documentation updated

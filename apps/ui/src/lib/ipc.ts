@@ -41,6 +41,10 @@ export const ipc = {
   commit: (repoPath: string, message: string) =>
     invokeWithError<Commit>('commit', { repoPath, message }),
 
+  // History
+  log: (repoPath: string, limit?: number) =>
+    invokeWithError<Commit[]>('log', { repoPath, limit }),
+
   // File watching
   startWatch: (repoPath: string) =>
     invokeWithError<void>('start_watch', { repoPath }),

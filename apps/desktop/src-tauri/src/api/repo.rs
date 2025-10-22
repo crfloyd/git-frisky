@@ -546,6 +546,96 @@ pub fn stage_hunk(repo_path: String, file_path: String, hunk: DiffHunk) -> Resul
 }
 
 #[tauri::command]
+pub fn log(repo_path: String, limit: Option<usize>) -> Result<Vec<Commit>, String> {
+    use git2::Sort;
+
+    let repo = Repository::open(&repo_path).map_err(toe)?;
+    let limit = limit.unwrap_or(500); // Default to 500 commits
+
+    // Create revwalk with topological + time sort
+    let mut revwalk = repo.revwalk().map_err(toe)?;
+    revwalk.set_sorting(Sort::TOPOLOGICAL | Sort::TIME).map_err(toe)?;
+
+    // Push ALL branches (local + remote) to show complete graph like GitKraken
+    // This ensures we see commits from all branches, not just the current one
+    let mut has_commits = false;
+
+    // Push all local branch heads
+    if let Ok(branches) = repo.branches(Some(git2::BranchType::Local)) {
+        for branch_result in branches {
+            if let Ok((branch, _)) = branch_result {
+                let reference = branch.get();
+                if let Some(oid) = reference.target() {
+                    revwalk.push(oid).map_err(toe)?;
+                    has_commits = true;
+                }
+            }
+        }
+    }
+
+    // Push all remote branch heads
+    if let Ok(branches) = repo.branches(Some(git2::BranchType::Remote)) {
+        for branch_result in branches {
+            if let Ok((branch, _)) = branch_result {
+                let reference = branch.get();
+                if let Some(oid) = reference.target() {
+                    revwalk.push(oid).map_err(toe)?;
+                    has_commits = true;
+                }
+            }
+        }
+    }
+
+    // If no branches found, try HEAD as fallback
+    if !has_commits {
+        if let Ok(head) = repo.head() {
+            if let Some(head_oid) = head.target() {
+                revwalk.push(head_oid).map_err(toe)?;
+                has_commits = true;
+            }
+        }
+    }
+
+    // No commits yet - return empty list
+    if !has_commits {
+        return Ok(vec![]);
+    }
+
+    let mut commits = vec![];
+
+    for oid_result in revwalk.take(limit) {
+        let oid = oid_result.map_err(toe)?;
+        let commit = repo.find_commit(oid).map_err(toe)?;
+
+        // Get parent OIDs
+        let parents: Vec<String> = commit.parents().map(|p| p.id().to_string()).collect();
+
+        // Get commit signature
+        let author = commit.author();
+        let author_name = author.name().unwrap_or("Unknown").to_string();
+        let author_email = author.email().unwrap_or("").to_string();
+
+        // Get commit message
+        let summary = commit.summary().unwrap_or("").to_string();
+        let message = commit.message().map(|m| m.to_string());
+
+        commits.push(Commit {
+            oid: oid.to_string(),
+            author: author_name,
+            email: author_email,
+            timestamp: commit.time().seconds(),
+            summary,
+            message,
+            parents,
+            refs: vec![], // TODO: Add branch/tag refs in Phase 5
+            lane: None,   // Will be computed on frontend for MVP
+        });
+    }
+
+    Ok(commits)
+}
+
+#[tauri::command]
 pub fn unstage_hunk(repo_path: String, file_path: String, hunk: DiffHunk) -> Result<(), String> {
     let repo = Repository::open(&repo_path).map_err(toe)?;
 

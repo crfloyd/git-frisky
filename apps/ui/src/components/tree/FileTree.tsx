@@ -137,20 +137,20 @@ function TreeItem({
     <>
       <div
         className={cn(
-          'flex items-center py-1.5 px-2 cursor-pointer',
+          'flex items-center py-0.5 px-1.5 cursor-pointer',
           'hover:bg-hover transition-colors',
-          'text-sm font-mono text-foreground-muted',
+          'text-xs font-mono text-foreground-muted',
           isSelected && 'bg-active'
         )}
-        style={{ paddingLeft: `${8 + node.depth * 16}px` }}
+        style={{ paddingLeft: `${6 + node.depth * 12}px` }}
         onClick={handleClick}
       >
         {node.type === 'folder' ? (
           <>
             {isExpanded ? (
-              <ChevronDown size={16} className="text-foreground-dim mr-1" />
+              <ChevronDown size={12} className="text-foreground-dim mr-1" />
             ) : (
-              <ChevronRight size={16} className="text-foreground-dim mr-1" />
+              <ChevronRight size={12} className="text-foreground-dim mr-1" />
             )}
             <span className="flex-1">{node.name}</span>
           </>
@@ -160,9 +160,9 @@ function TreeItem({
               type="checkbox"
               checked={isStaged}
               onChange={handleCheckboxChange}
-              className="mr-2 w-3 h-3"
+              className="mr-1.5 w-2.5 h-2.5"
             />
-            <span className="flex-1 mr-2 truncate">{node.name}</span>
+            <span className="flex-1 mr-1.5 truncate">{node.name}</span>
             {node.file && <StatusBadge status={node.file.status} />}
           </>
         )}
@@ -215,38 +215,43 @@ export function FileTree({
   }
 
   return (
-    <div className="h-full overflow-y-auto bg-elevated p-4">
-      {/* UNSTAGED Section */}
-      {unstaged.length > 0 && (
-        <div className="mb-6">
-          <div
-            className="flex items-center justify-between py-2 mb-2 cursor-pointer hover:bg-hover rounded transition-colors px-2"
-            onClick={() => setUnstagedExpanded(!unstagedExpanded)}
-          >
-            <div className="flex items-center gap-2">
-              {unstagedExpanded ? (
-                <ChevronDown size={14} className="text-foreground-dim" />
-              ) : (
-                <ChevronRight size={14} className="text-foreground-dim" />
-              )}
-              <span className="text-xs font-medium text-foreground-dim uppercase tracking-wide">
-                Unstaged Changes
-              </span>
-              <span className="text-xs text-foreground-dim">({unstaged.length})</span>
-            </div>
+    <div className="h-full flex flex-col bg-elevated">
+      {/* UNSTAGED Section - Independent scrollable area */}
+      <div className="flex flex-col flex-1 min-h-0 border-b border-border">
+        {/* Sticky Header */}
+        <div
+          className="flex items-center justify-between px-3 py-1.5 bg-elevated/50 border-b border-border cursor-pointer hover:bg-hover transition-colors sticky top-0 z-10"
+          onClick={() => setUnstagedExpanded(!unstagedExpanded)}
+        >
+          <div className="flex items-center gap-1.5">
+            {unstagedExpanded ? (
+              <ChevronDown size={12} className="text-foreground-dim" />
+            ) : (
+              <ChevronRight size={12} className="text-foreground-dim" />
+            )}
+            <span className="text-[11px] font-semibold text-foreground uppercase tracking-wide">
+              Unstaged Changes
+            </span>
+            <span className="text-[10px] font-medium text-foreground-dim">({unstaged.length})</span>
+          </div>
+          {unstaged.length > 0 && (
             <button
               onClick={(e) => {
                 e.stopPropagation()
                 handleStageAll()
               }}
-              className="text-xs px-2 py-1 rounded bg-hover hover:bg-active transition-colors text-foreground-muted"
+              className="text-[10px] px-1.5 py-0.5 rounded bg-hover hover:bg-active transition-colors text-foreground-muted"
             >
               Stage All
             </button>
-          </div>
-          {unstagedExpanded && (
-            <div>
-              {unstagedTree.map((node) => (
+          )}
+        </div>
+
+        {/* Scrollable Content */}
+        {unstagedExpanded && (
+          <div className="flex-1 overflow-y-auto px-1.5 py-1">
+            {unstaged.length > 0 ? (
+              unstagedTree.map((node) => (
                 <TreeItem
                   key={node.path}
                   node={node}
@@ -256,43 +261,52 @@ export function FileTree({
                   onSelectFile={onSelectFile}
                   onToggleStage={onStageFile}
                 />
-              ))}
-            </div>
-          )}
-        </div>
-      )}
+              ))
+            ) : (
+              <div className="flex items-center justify-center h-full">
+                <p className="text-[10px] text-foreground-dim">No unstaged changes</p>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
 
-      {/* STAGED Section */}
-      {staged.length > 0 && (
-        <div>
-          <div
-            className="flex items-center justify-between py-2 mb-2 cursor-pointer hover:bg-hover rounded transition-colors px-2"
-            onClick={() => setStagedExpanded(!stagedExpanded)}
-          >
-            <div className="flex items-center gap-2">
-              {stagedExpanded ? (
-                <ChevronDown size={14} className="text-foreground-dim" />
-              ) : (
-                <ChevronRight size={14} className="text-foreground-dim" />
-              )}
-              <span className="text-xs font-medium text-foreground-dim uppercase tracking-wide">
-                Staged Changes
-              </span>
-              <span className="text-xs text-foreground-dim">({staged.length})</span>
-            </div>
+      {/* STAGED Section - Independent scrollable area */}
+      <div className="flex flex-col flex-1 min-h-0">
+        {/* Sticky Header */}
+        <div
+          className="flex items-center justify-between px-3 py-1.5 bg-elevated/50 border-b border-border cursor-pointer hover:bg-hover transition-colors sticky top-0 z-10"
+          onClick={() => setStagedExpanded(!stagedExpanded)}
+        >
+          <div className="flex items-center gap-1.5">
+            {stagedExpanded ? (
+              <ChevronDown size={12} className="text-foreground-dim" />
+            ) : (
+              <ChevronRight size={12} className="text-foreground-dim" />
+            )}
+            <span className="text-[11px] font-semibold text-foreground uppercase tracking-wide">
+              Staged Changes
+            </span>
+            <span className="text-[10px] font-medium text-foreground-dim">({staged.length})</span>
+          </div>
+          {staged.length > 0 && (
             <button
               onClick={(e) => {
                 e.stopPropagation()
                 handleUnstageAll()
               }}
-              className="text-xs px-2 py-1 rounded bg-hover hover:bg-active transition-colors text-foreground-muted"
+              className="text-[10px] px-1.5 py-0.5 rounded bg-hover hover:bg-active transition-colors text-foreground-muted"
             >
               Unstage All
             </button>
-          </div>
-          {stagedExpanded && (
-            <div>
-              {stagedTree.map((node) => (
+          )}
+        </div>
+
+        {/* Scrollable Content */}
+        {stagedExpanded && (
+          <div className="flex-1 overflow-y-auto px-1.5 py-1">
+            {staged.length > 0 ? (
+              stagedTree.map((node) => (
                 <TreeItem
                   key={node.path}
                   node={node}
@@ -302,18 +316,15 @@ export function FileTree({
                   onSelectFile={onSelectFile}
                   onToggleStage={onUnstageFile}
                 />
-              ))}
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* Empty state */}
-      {unstaged.length === 0 && staged.length === 0 && (
-        <div className="flex items-center justify-center h-full">
-          <p className="text-sm text-foreground-dim">No changes</p>
-        </div>
-      )}
+              ))
+            ) : (
+              <div className="flex items-center justify-center h-full">
+                <p className="text-[10px] text-foreground-dim">No staged changes</p>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
     </div>
   )
 }
