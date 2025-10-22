@@ -1,77 +1,88 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-@layer base {
-  :root {
-    /* Design system base */
-    --radius: 4px;
+@theme {
+  /* Background colors */
+  --color-base: #14161c;
+  --color-elevated: #181a21;
+  --color-overlay: #1c1f26;
+  --color-hover: #20242c;
+  --color-active: #242832;
+  --color-subtle: #0f1115;
 
-    /* Background Colors */
-    --color-bg-base: 220 13% 9%;          /* #14161C — Main background */
-    --color-bg-elevated: 220 13% 11%;     /* #181A21 — Panels, cards */
-    --color-bg-overlay: 220 13% 13%;      /* #1C1F26 — Modals, popovers */
-    --color-bg-hover: 220 13% 15%;        /* #20242C — Hover states */
-    --color-bg-active: 220 13% 17%;       /* #242832 — Active/pressed */
-    --color-bg-subtle: 220 13% 7%;        /* #0F1115 — Recessed areas */
+  /* Text/Foreground colors */
+  --color-foreground: #f9f9fa;
+  --color-foreground-muted: #adadb8;
+  --color-foreground-dim: #787c8a;
+  --color-foreground-disabled: #4f5260;
 
-    /* Border Colors */
-    --color-border-base: 220 13% 18%;     /* #272B35 — Borders, dividers */
-    --color-border-focus: 220 13% 28%;    /* #3D434F — Focus rings */
-    --color-border-strong: 220 13% 35%;   /* #4D5461 — Strong dividers */
+  /* Border colors */
+  --color-border: #272b35;
+  --color-border-focus: #3d434f;
+  --color-border-strong: #4d5461;
 
-    /* Text Colors */
-    --color-text-primary: 220 13% 98%;    /* #F9F9FA — Headings, labels */
-    --color-text-secondary: 220 10% 70%;  /* #ADADB8 — Body text */
-    --color-text-tertiary: 220 10% 50%;   /* #787C8A — Hints, meta */
-    --color-text-disabled: 220 10% 35%;   /* #4F5260 — Disabled text */
+  /* Action/semantic colors (blue primary action) */
+  --color-accent: #5d9aee;
+  --color-success: #5fb67a;
+  --color-warning: #e5c07b;
+  --color-danger: #e06c75;
+  --color-info: #66b3d9;
 
-    /* Git Status Colors */
-    --color-added: 142 45% 55%;           /* #5FB67A — Added lines, new files */
-    --color-added-bg: 142 45% 12%;        /* #0F2617 — Added line backgrounds */
-    --color-removed: 355 55% 62%;         /* #E06C75 — Deleted lines, removed files */
-    --color-removed-bg: 355 55% 12%;      /* #2A1317 — Deleted line backgrounds */
-    --color-modified: 40 70% 60%;         /* #E5C07B — Modified files */
-    --color-modified-bg: 40 70% 12%;      /* #2B2114 — Modified backgrounds */
-    --color-conflict: 25 75% 60%;         /* #E89656 — Merge conflicts */
-    --color-conflict-bg: 25 75% 12%;      /* #2B1C11 — Conflict backgrounds */
+  /* Git status colors */
+  --color-added: #5fb67a;
+  --color-added-bg: #0f2617;
+  --color-removed: #e06c75;
+  --color-removed-bg: #2a1317;
+  --color-modified: #e5c07b;
+  --color-modified-bg: #2b2114;
+  --color-conflict: #e89656;
+  --color-conflict-bg: #2b1c11;
 
-    /* Action Colors */
-    --color-primary: 215 85% 65%;         /* #5D9AEE — Links, primary actions */
-    --color-primary-hover: 215 85% 70%;   /* Lighter on hover */
-    --color-success: 142 45% 55%;         /* Same as added */
-    --color-warning: 40 70% 60%;          /* Same as modified */
-    --color-danger: 355 55% 62%;          /* Same as removed */
-    --color-info: 200 60% 60%;            /* #66B3D9 — Info messages */
+  /* Font families */
+  --font-family-ui: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+  --font-family-mono: "SF Mono", "JetBrains Mono", "Cascadia Code", "Fira Code", Consolas, monospace;
 
-    /* Typography */
-    --font-ui: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
-    --font-mono: "SF Mono", "JetBrains Mono", "Cascadia Code", "Fira Code", Consolas, monospace;
+  /* Font sizes */
+  --font-size-xs: 11px;
+  --font-size-sm: 12px;
+  --font-size-base: 13px;
+  --font-size-md: 14px;
+  --font-size-lg: 16px;
+  --font-size-xl: 20px;
 
-    /* Spacing */
-    --space-1: 4px;
-    --space-2: 8px;
-    --space-3: 12px;
-    --space-4: 16px;
-    --space-5: 20px;
-    --space-6: 24px;
-    --space-8: 32px;
-    --space-10: 40px;
-    --space-12: 48px;
-  }
+  /* Line heights */
+  --line-height-xs: 16px;
+  --line-height-sm: 18px;
+  --line-height-base: 20px;
+  --line-height-md: 22px;
+  --line-height-lg: 24px;
+  --line-height-xl: 28px;
+
+  /* Spacing */
+  --spacing-1: 4px;
+  --spacing-2: 8px;
+  --spacing-3: 12px;
+  --spacing-4: 16px;
+  --spacing-5: 20px;
+  --spacing-6: 24px;
+  --spacing-8: 32px;
+  --spacing-10: 40px;
+  --spacing-12: 48px;
+
+  /* Border radius */
+  --radius: 4px;
 }
 
 @layer base {
   * {
-    border-color: hsl(var(--color-border-base));
+    border-color: var(--color-border);
   }
 
   body {
-    background-color: hsl(var(--color-bg-base));
-    color: hsl(var(--color-text-primary));
-    font-family: var(--font-ui);
-    font-size: 13px;
-    line-height: 20px;
+    background-color: var(--color-base);
+    color: var(--color-foreground);
+    font-family: var(--font-family-ui);
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-base);
     font-weight: 400;
     margin: 0;
     padding: 0;
@@ -88,16 +99,16 @@
   /* Typography */
   h1, h2, h3, h4, h5, h6 {
     font-weight: 500;
-    color: hsl(var(--color-text-primary));
+    color: var(--color-foreground);
   }
 
   code, pre {
-    font-family: var(--font-mono);
+    font-family: var(--font-family-mono);
   }
 
   /* Focus styles */
   *:focus-visible {
-    outline: 2px solid hsl(var(--color-border-focus));
+    outline: 2px solid var(--color-border-focus);
     outline-offset: 0px;
   }
 }

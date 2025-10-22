@@ -12,38 +12,48 @@ export default {
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)',
       },
+      // Define colors properly for Tailwind utilities
+      backgroundColor: {
+        base: 'hsl(var(--color-bg-base))',
+        elevated: 'hsl(var(--color-bg-elevated))',
+        overlay: 'hsl(var(--color-bg-overlay))',
+        hover: 'hsl(var(--color-bg-hover))',
+        active: 'hsl(var(--color-bg-active))',
+        subtle: 'hsl(var(--color-bg-subtle))',
+      },
+      textColor: {
+        primary: 'hsl(var(--color-text-primary))',
+        secondary: 'hsl(var(--color-text-secondary))',
+        tertiary: 'hsl(var(--color-text-tertiary))',
+        disabled: 'hsl(var(--color-text-disabled))',
+        added: 'hsl(var(--color-added))',
+        removed: 'hsl(var(--color-removed))',
+        modified: 'hsl(var(--color-modified))',
+        conflict: 'hsl(var(--color-conflict))',
+        success: 'hsl(var(--color-success))',
+        warning: 'hsl(var(--color-warning))',
+        danger: 'hsl(var(--color-danger))',
+        info: 'hsl(var(--color-info))',
+      },
+      borderColor: {
+        DEFAULT: 'hsl(var(--color-border-base))',
+        base: 'hsl(var(--color-border-base))',
+        focus: 'hsl(var(--color-border-focus))',
+        strong: 'hsl(var(--color-border-strong))',
+      },
       colors: {
-        // Tailwind semantic names mapped to our design system
+        // For other utilities (like divide, ring, etc.)
         border: 'hsl(var(--color-border-base))',
         input: 'hsl(var(--color-border-base))',
         ring: 'hsl(var(--color-border-focus))',
         background: 'hsl(var(--color-bg-base))',
         foreground: 'hsl(var(--color-text-primary))',
-        primary: {
-          DEFAULT: 'hsl(var(--color-primary))',
-          foreground: 'hsl(var(--color-text-primary))',
-        },
-        secondary: {
-          DEFAULT: 'hsl(var(--color-bg-elevated))',
-          foreground: 'hsl(var(--color-text-secondary))',
-        },
 
-        // Custom design system colors (direct access)
-        'bg-base': 'hsl(var(--color-bg-base))',
-        'bg-elevated': 'hsl(var(--color-bg-elevated))',
-        'bg-overlay': 'hsl(var(--color-bg-overlay))',
-        'bg-hover': 'hsl(var(--color-bg-hover))',
-        'bg-active': 'hsl(var(--color-bg-active))',
-        'bg-subtle': 'hsl(var(--color-bg-subtle))',
-
-        'border-base': 'hsl(var(--color-border-base))',
-        'border-focus': 'hsl(var(--color-border-focus))',
-        'border-strong': 'hsl(var(--color-border-strong))',
-
-        'text-primary': 'hsl(var(--color-text-primary))',
-        'text-secondary': 'hsl(var(--color-text-secondary))',
-        'text-tertiary': 'hsl(var(--color-text-tertiary))',
-        'text-disabled': 'hsl(var(--color-text-disabled))',
+        primary: 'hsl(var(--color-primary))',
+        success: 'hsl(var(--color-success))',
+        warning: 'hsl(var(--color-warning))',
+        danger: 'hsl(var(--color-danger))',
+        info: 'hsl(var(--color-info))',
 
         added: 'hsl(var(--color-added))',
         'added-bg': 'hsl(var(--color-added-bg))',
@@ -53,11 +63,6 @@ export default {
         'modified-bg': 'hsl(var(--color-modified-bg))',
         conflict: 'hsl(var(--color-conflict))',
         'conflict-bg': 'hsl(var(--color-conflict-bg))',
-
-        success: 'hsl(var(--color-success))',
-        warning: 'hsl(var(--color-warning))',
-        danger: 'hsl(var(--color-danger))',
-        info: 'hsl(var(--color-info))',
       },
       fontFamily: {
         ui: 'var(--font-ui)',

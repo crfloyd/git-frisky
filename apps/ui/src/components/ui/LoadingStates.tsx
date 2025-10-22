@@ -5,7 +5,7 @@ export function Spinner({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        "inline-block w-4 h-4 border-2 border-tertiary border-t-primary rounded-full animate-spin",
+        "inline-block w-4 h-4 border-2 border-foreground-dim border-t-accent rounded-full animate-spin",
         className
       )}
       role="status"
@@ -32,7 +32,7 @@ export function ProgressBar({ progress, className }: { progress: number; classNa
   return (
     <div className={cn("h-1 bg-hover rounded-full overflow-hidden", className)}>
       <div
-        className="h-full bg-primary transition-all duration-300 ease-out rounded-full"
+        className="h-full bg-accent transition-all duration-300 ease-out rounded-full"
         style={{ width: `${Math.min(100, Math.max(0, progress))}%` }}
       />
     </div>

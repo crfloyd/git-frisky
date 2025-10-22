@@ -20,7 +20,20 @@
       }
     ],
     "security": {
-      "csp": null
+      "csp": null,
+      "capabilities": [
+        {
+          "identifier": "main-capability",
+          "description": "Capability for the main window",
+          "windows": ["main"],
+          "permissions": [
+            "core:default",
+            "shell:default",
+            "dialog:default",
+            "dialog:allow-open"
+          ]
+        }
+      ]
     }
   },
   "bundle": {

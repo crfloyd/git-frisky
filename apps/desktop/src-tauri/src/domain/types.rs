@@ -1,6 +1,9 @@
 use serde::{Serialize, Deserialize};
 use thiserror::Error;
 
+// Re-export RepoState for use in GitError
+pub use RepoState as RepoStateEnum;
+
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct Branch {
     pub name: String,
@@ -58,8 +61,11 @@ pub struct DiffHunk {
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct DiffLine {
     pub content: String,
+    #[serde(rename = "lineType")]
     pub line_type: LineType,
+    #[serde(rename = "oldLineno")]
     pub old_lineno: Option<u32>,
+    #[serde(rename = "newLineno")]
     pub new_lineno: Option<u32>,
 }
 
@@ -79,6 +85,12 @@ pub struct RepoSummary {
     pub is_bare: bool,
     pub is_detached: bool,
     pub state: RepoState,
+}
+
+#[derive(Serialize, Deserialize, Clone, Debug)]
+pub struct StatusPayload {
+    pub unstaged: Vec<FileChange>,
+    pub staged: Vec<FileChange>,
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
