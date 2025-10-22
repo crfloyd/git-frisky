@@ -7,10 +7,17 @@
     "packages/*"
   ],
   "scripts": {
-    "dev": "pnpm -C apps/ui dev",
-    "typecheck": "pnpm -C apps/ui typecheck && pnpm -C packages/* typecheck",
-    "lint": "pnpm -C apps/ui lint",
-    "build": "pnpm -C apps/ui build"
+    "check-env": "./scripts/check-env.sh",
+    "dev": "pnpm tauri dev",
+    "dev:ui": "pnpm -C apps/ui dev",
+    "typecheck": "pnpm -C apps/ui typecheck && pnpm -C packages/shared-types typecheck",
+    "lint": "pnpm -C apps/ui lint && cargo clippy --manifest-path apps/desktop/src-tauri/Cargo.toml --all-targets",
+    "format": "pnpm -C apps/ui format && cargo fmt --manifest-path apps/desktop/src-tauri/Cargo.toml",
+    "test": "pnpm -C apps/ui test && cargo test --manifest-path apps/desktop/src-tauri/Cargo.toml",
+    "test:e2e": "pnpm -C apps/ui test:e2e",
+    "build": "pnpm -C apps/ui build && pnpm tauri build",
+    "build:ui": "pnpm -C apps/ui build",
+    "tauri": "tauri"
   },
   "devDependencies": {
     "@tauri-apps/cli": "^2.9.0"

@@ -1,31 +1,43 @@
 # GitFrisky
 
-A modern Git client built with **Tauri** and **React** — fast diffs, clean commit graphs, and a lightweight native runtime.
+**Fast, minimal, keyboard-first Git client for power users**
+
+Built with Tauri + React + Rust (libgit2). Single-repo focus, <100ms graph rendering, professional UI.
 
 ---
 
-## Setup
+## Quick Start
 
-### 1. Prerequisites
-Make sure you have:
-- **Node.js ≥ 20** (includes Corepack)
-- **pnpm ≥ 9** (`corepack enable && corepack prepare pnpm@9.12.1 --activate`)
-- **Rust ≥ 1.76** (`rustup update`)
-- **Cargo** and **Git**
-
-### 2. Clone the repo
+### 1. Check Environment
 ```bash
-git clone https://github.com/<your-username>/git-frisky.git
-cd git-frisky
-````
+pnpm check-env
+```
+This validates all prerequisites (Node, Rust, platform dependencies).
 
-### 3. Install dependencies
-
+### 2. Install Dependencies
 ```bash
 pnpm install
 ```
+Installs frontend (React) and Tauri CLI. Rust dependencies build on first run.
 
-This installs both the frontend (Vite + React) and the Tauri backend CLI.
+### 3. Start Development
+```bash
+pnpm dev
+```
+Opens Tauri window with React dev server (hot reload enabled).
+
+---
+
+## Documentation
+
+- **[CLAUDE.md](./CLAUDE.md)** — Complete technical architecture, IPC API, implementation guide
+- **[UI_DESIGN.md](./UI_DESIGN.md)** — Design system, component specs, color palette
+- **[REVIEW_SUMMARY.md](./REVIEW_SUMMARY.md)** — VP review, handoff checklist, quality gates
+
+**Start here if implementing:**
+1. Read CLAUDE.md Sections 0-7 (architecture, security, types, git2 patterns)
+2. Read UI_DESIGN.md (design system, all 12 components)
+3. Follow CLAUDE.md Section 24 (200+ task checklist, phase-by-phase)
 
 ### 4. Scaffolded structure
 
@@ -41,59 +53,124 @@ packages/
 
 ---
 
-## Running the app (development)
-
-Run the frontend and Tauri app side by side:
+## Development Workflow
 
 ```bash
-# Terminal 1: run the Vite dev server
-pnpm -C apps/ui dev
-```
+# Run full dev environment (Tauri + React with HMR)
+pnpm dev
 
-```bash
-# Terminal 2: launch Tauri with the Vite dev server
-pnpm tauri dev --config apps/desktop/src-tauri/tauri.conf.json
-```
+# Run only React dev server (for UI-only work)
+pnpm dev:ui
 
-This opens a desktop window that loads the live React UI.
+# Type checking
+pnpm typecheck
 
----
+# Linting (ESLint + Clippy)
+pnpm lint
 
-## Building for release
+# Formatting (Prettier + rustfmt)
+pnpm format
 
-```bash
-# Build UI
-pnpm -C apps/ui build
+# Testing
+pnpm test              # Run all tests (Rust + React)
+pnpm test:e2e          # Run Playwright E2E tests
 
-# Bundle native app (macOS, Windows, Linux)
-pnpm tauri build --config apps/desktop/src-tauri/tauri.conf.json
-```
-
-Output binaries and installers will be under:
-
-```
-apps/desktop/src-tauri/target/release/bundle/
+# Build production bundle
+pnpm build             # Builds UI + native app (DMG/MSI/AppImage)
 ```
 
 ---
 
-## Notes
+## Project Structure
 
-* `apps/ui` uses Vite’s default dev port (`5173`).
-* `tauri.conf.json` maps `devUrl` → [http://localhost:5173](http://localhost:5173) and `frontendDist` → `../../ui/dist`.
-* Everything is workspace-managed via **pnpm** and **Cargo**.
+```
+git-frisky/
+├── apps/
+│   ├── ui/                      # React frontend (Vite + TypeScript)
+│   │   ├── src/
+│   │   │   ├── components/      # UI components (layout, graph, diff, etc.)
+│   │   │   ├── stores/          # Zustand state (repo, diff, graph, ui)
+│   │   │   ├── lib/             # Utilities (ipc, format, keyboard)
+│   │   │   └── styles/          # Tailwind CSS
+│   │   └── package.json
+│   │
+│   └── desktop/
+│       └── src-tauri/           # Tauri backend (Rust)
+│           ├── src/
+│           │   ├── api/         # IPC commands (repo, graph, diff, etc.)
+│           │   ├── domain/      # Domain types (Commit, Branch, etc.)
+│           │   └── util/        # Utilities (errors, git_ext, io)
+│           └── Cargo.toml
+│
+├── packages/
+│   ├── shared-types/            # TypeScript types (mirrors Rust types)
+│   └── parsers/                 # Diff/graph utilities
+│
+├── docs/
+│   ├── decisions/               # Architecture Decision Records (ADRs)
+│   └── screenshots/             # UI screenshots
+│
+├── CLAUDE.md                    # Technical architecture (1300+ lines)
+├── UI_DESIGN.md                 # Design system (1100+ lines)
+└── REVIEW_SUMMARY.md            # VP review, quality gates
+```
+
+---
+
+## Architecture Overview
+
+- **Frontend**: React 19 + TypeScript + Tailwind + shadcn/ui + Zustand + React Query
+- **Backend**: Rust + Tauri v2 + libgit2 (git2 crate) + notify (file watching)
+- **IPC**: Tauri commands (request/response) + events (streaming progress)
+- **Performance**: Virtualized rendering (react-virtual), Rust for heavy git ops, <100ms targets
+
+**Key Design Decisions:**
+- Single-repo model (like Sublime Merge, not multi-tab)
+- libgit2 over shell git (speed, control)
+- Keyboard-first UX (command palette, shortcuts)
+- Minimal UI (information-dense without clutter)
+
+See [CLAUDE.md](./CLAUDE.md) for complete architecture.
+
+---
+
+## Performance Targets
+
+- App launch: <2s
+- Status refresh: <50ms (1000 files)
+- Commit graph render: <100ms (1000 commits)
+- Diff display: <100ms (1000 lines)
+
+See CLAUDE.md Section 0 for all targets.
 
 ---
 
 ## Contributing
 
-Pull requests welcome!
-Before committing, ensure:
+**Before submitting PRs:**
+1. Read [CLAUDE.md](./CLAUDE.md) Sections 0-7 (architecture)
+2. Follow phase-by-phase checklist (CLAUDE.md Section 24)
+3. Meet quality gates (REVIEW_SUMMARY.md)
 
+**Before committing:**
 ```bash
-pnpm lint && pnpm typecheck
-cargo fmt && cargo clippy
+pnpm format            # Format code
+pnpm lint              # Check lint (0 warnings required)
+pnpm typecheck         # TypeScript check
+pnpm test              # Run tests (>70% Rust, >60% frontend coverage)
 ```
+
+**Testing Strategy:**
+- Unit tests: Rust (cargo test), React (Vitest)
+- Integration: Playwright E2E
+- Performance: Benchmark critical paths (see CLAUDE.md Section 12)
+
+**Code Review Checklist:**
+- [ ] Follows design system (UI_DESIGN.md)
+- [ ] Meets performance targets
+- [ ] Tests included (unit + integration)
+- [ ] Documentation updated
+- [ ] CHANGELOG.md updated
 
 ---
 
