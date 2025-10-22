@@ -8,40 +8,41 @@
     --radius: 4px;
 
     /* Background Colors */
-    --color-bg-base: 220 13% 9%;          /* #14161C */
-    --color-bg-elevated: 220 13% 11%;     /* #191B22 */
-    --color-bg-overlay: 220 13% 13%;      /* #1E2028 */
-    --color-bg-hover: 220 13% 15%;        /* #23252E */
-    --color-bg-active: 220 13% 17%;       /* #282A34 */
+    --color-bg-base: 220 13% 9%;          /* #14161C — Main background */
+    --color-bg-elevated: 220 13% 11%;     /* #181A21 — Panels, cards */
+    --color-bg-overlay: 220 13% 13%;      /* #1C1F26 — Modals, popovers */
+    --color-bg-hover: 220 13% 15%;        /* #20242C — Hover states */
+    --color-bg-active: 220 13% 17%;       /* #242832 — Active/pressed */
+    --color-bg-subtle: 220 13% 7%;        /* #0F1115 — Recessed areas */
 
     /* Border Colors */
-    --color-border-base: 220 13% 18%;     /* #2C2E38 */
-    --color-border-strong: 220 13% 25%;   /* #3A3D4A */
-    --color-border-focus: 215 85% 65%;    /* #5D9AEE */
+    --color-border-base: 220 13% 18%;     /* #272B35 — Borders, dividers */
+    --color-border-focus: 220 13% 28%;    /* #3D434F — Focus rings */
+    --color-border-strong: 220 13% 35%;   /* #4D5461 — Strong dividers */
 
     /* Text Colors */
-    --color-text-primary: 220 13% 98%;    /* #F9F9FA */
-    --color-text-secondary: 220 10% 70%;  /* #ADADB8 */
-    --color-text-tertiary: 220 10% 50%;   /* #787C8A */
-    --color-text-disabled: 220 10% 35%;   /* #4F5260 */
+    --color-text-primary: 220 13% 98%;    /* #F9F9FA — Headings, labels */
+    --color-text-secondary: 220 10% 70%;  /* #ADADB8 — Body text */
+    --color-text-tertiary: 220 10% 50%;   /* #787C8A — Hints, meta */
+    --color-text-disabled: 220 10% 35%;   /* #4F5260 — Disabled text */
 
     /* Git Status Colors */
-    --color-added: 142 45% 55%;           /* #5FB67A */
-    --color-added-bg: 142 45% 12%;        /* #0F2617 */
-    --color-removed: 355 55% 62%;         /* #E06C75 */
-    --color-removed-bg: 355 55% 12%;      /* #2A1317 */
-    --color-modified: 40 70% 60%;         /* #E5C07B */
-    --color-modified-bg: 40 70% 12%;      /* #2B2114 */
-    --color-conflict: 25 75% 60%;         /* #E89656 */
-    --color-conflict-bg: 25 75% 12%;      /* #2B1C11 */
+    --color-added: 142 45% 55%;           /* #5FB67A — Added lines, new files */
+    --color-added-bg: 142 45% 12%;        /* #0F2617 — Added line backgrounds */
+    --color-removed: 355 55% 62%;         /* #E06C75 — Deleted lines, removed files */
+    --color-removed-bg: 355 55% 12%;      /* #2A1317 — Deleted line backgrounds */
+    --color-modified: 40 70% 60%;         /* #E5C07B — Modified files */
+    --color-modified-bg: 40 70% 12%;      /* #2B2114 — Modified backgrounds */
+    --color-conflict: 25 75% 60%;         /* #E89656 — Merge conflicts */
+    --color-conflict-bg: 25 75% 12%;      /* #2B1C11 — Conflict backgrounds */
 
     /* Action Colors */
-    --color-primary: 215 85% 65%;         /* #5D9AEE */
-    --color-primary-hover: 215 85% 70%;
-    --color-success: 142 45% 55%;
-    --color-warning: 40 70% 60%;
-    --color-danger: 355 55% 62%;
-    --color-info: 200 60% 60%;            /* #66B3D9 */
+    --color-primary: 215 85% 65%;         /* #5D9AEE — Links, primary actions */
+    --color-primary-hover: 215 85% 70%;   /* Lighter on hover */
+    --color-success: 142 45% 55%;         /* Same as added */
+    --color-warning: 40 70% 60%;          /* Same as modified */
+    --color-danger: 355 55% 62%;          /* Same as removed */
+    --color-info: 200 60% 60%;            /* #66B3D9 — Info messages */
 
     /* Typography */
     --font-ui: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
